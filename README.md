@@ -19,8 +19,6 @@ A clean, simple, and robust .NET Standard library for integrating with CyberArk 
 - ✅ **Simple API** - Clean and intuitive interface with fluent configuration
 - ✅ **Multiple Authentication Methods** - Application ID only, client certificates (file or certificate store)
 - ✅ **Async & Sync Support** - Both asynchronous and synchronous method variants
-- ✅ **Dependency Injection** - Full support for .NET Core DI container
-- ✅ **Async/Await** - Modern async programming patterns
 - ✅ **Comprehensive Logging** - Structured logging with Microsoft.Extensions.Logging
 - ✅ **Flexible Configuration** - Support for configuration files, environment variables, etc.
 - ✅ **SSL Configuration** - Control SSL verification and client certificates
