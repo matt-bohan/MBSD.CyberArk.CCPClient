@@ -4,4 +4,45 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
+ 
+
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>MBSD.CyberArk.CCPClient</PackageId>
+		<PackageVersion>1.0.0</PackageVersion>
+		<Authors>Matthew Bohan</Authors>
+		<Company>MBSD</Company>
+		<Product>MBSD CyberArk Central Credential Provider .NET Client</Product>
+		<Description>A .NET Standard library for integrating with CyberArk Central Credential Provider (CCP). This library is developed independently and is not affiliated with CyberArk Software Ltd.</Description>
+		<PackageTags>CyberArk;CCP;Secrets;Security;Credentials;Central-Credential-Provider;Independent</PackageTags>
+		<RepositoryUrl>https://github.com/matthewbohan/mbsd-cyberark-ccpclient</RepositoryUrl>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Copyright>Copyright (c) 2025 Matthew Bohan (matthew.bohan@gmail.com)</Copyright>
+		<PackageReleaseNotes>
+			CyberArk CCP client library with flexible per-request Application ID and certificate support.
+			DISCLAIMER: This library is developed independently by Matthew Bohan and is not affiliated with, endorsed by, or sponsored by CyberArk / CyberArk Software Ltd.
+		</PackageReleaseNotes>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="\" />
+	 
+	</ItemGroup>
 </Project>
