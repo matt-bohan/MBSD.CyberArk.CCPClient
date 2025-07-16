@@ -16,13 +16,13 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>MBSD.CyberArk.CCPClient</PackageId>
-		<PackageVersion>1.0.0</PackageVersion>
+		<PackageVersion>1.0.1</PackageVersion>
 		<Authors>Matthew Bohan</Authors>
 		<Company>MBSD</Company>
 		<Product>MBSD CyberArk Central Credential Provider .NET Client</Product>
 		<Description>A .NET Standard library for integrating with CyberArk Central Credential Provider (CCP). This library is developed independently and is not affiliated with CyberArk Software Ltd.</Description>
 		<PackageTags>CyberArk;CCP;Secrets;Security;Credentials;Central-Credential-Provider;Independent</PackageTags>
-		<RepositoryUrl>https://github.com/matthewbohan/mbsd-cyberark-ccpclient</RepositoryUrl>
+		<RepositoryUrl>https://github.com/matt-bohan/MBSD.CyberArk.CCPClient</RepositoryUrl>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
