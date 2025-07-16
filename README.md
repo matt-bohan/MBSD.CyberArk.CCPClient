@@ -40,31 +40,31 @@ using CyberArk.SecretsManager;
 using CyberArk.SecretsManager.Configuration;
 using CyberArk.SecretsManager.Models;
 
-var options = new CcpOptions
+var options = new CCPOptions
 {
-    BaseUrl = "https://ccp.company.com"
+    BaseUrl = "https://CCP.company.com"
     // No default Application ID needed!
 };
 
 using var httpClient = new HttpClient();
-using var ccpClient = new CcpClient(httpClient, Options.Create(options));
+using var CCPClient = new CCPClient(httpClient, Options.Create(options));
 
 // Async methods
-var dbSecret = await ccpClient.GetSecretAsync(
+var dbSecret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("DatabaseAccount", "DatabaseApp"));
 
-var adminSecret = await ccpClient.GetSecretAsync(
+var adminSecret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("AdminAccount", "AdminApp")
         .UsingCertificateFile(@"C:\certs\admin.p12", "password"));
 
 // Synchronous methods (for legacy code compatibility)
-var dbSecretSync = ccpClient.GetSecret(
+var dbSecretSync = CCPClient.GetSecret(
     SecretRequest.ForObjectWithAppId("DatabaseAccount", "DatabaseApp"));
 
-var passwordSync = ccpClient.GetPassword("SimpleAccount");
+var passwordSync = CCPClient.GetPassword("SimpleAccount");
 
 // Fluent API works with both async and sync
-var password = await ccpClient.GetPasswordAsync(
+var password = await CCPClient.GetPasswordAsync(
     SecretRequest.ForObject("ServiceAccount")
         .UsingApplicationId("ServiceApp")
         .UsingCertificateStore("THUMBPRINT123")
@@ -75,9 +75,9 @@ var password = await ccpClient.GetPasswordAsync(
 ### Pre-Configured Application ID Mappings
 
 ```csharp
-var options = new CcpOptions
+var options = new CCPOptions
 {
-    BaseUrl = "https://ccp.company.com",
+    BaseUrl = "https://CCP.company.com",
     DefaultApplicationId = "WebApp",
     
     // Map certificates to Application IDs
@@ -90,10 +90,10 @@ var options = new CcpOptions
 };
 
 // Now these automatically use the right certificates
-var dbSecret = await ccpClient.GetSecretAsync(
+var dbSecret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("DatabaseAccount", "DatabaseApp")); // Uses database cert
 
-var adminSecret = await ccpClient.GetSecretAsync(
+var adminSecret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("AdminAccount", "AdminApp")); // Uses admin cert from store
 ```
 
@@ -103,9 +103,9 @@ var adminSecret = await ccpClient.GetSecretAsync(
 using CyberArk.SecretsManager.Extensions;
 
 // In Startup.cs or Program.cs
-services.AddCyberArkCcp(options =>
+services.AddCyberArkCCP(options =>
 {
-    options.BaseUrl = "https://ccp.company.com";
+    options.BaseUrl = "https://CCP.company.com";
     options.DefaultApplicationId = "WebApp";
     
     // Pre-configure certificates for different Application IDs
@@ -120,14 +120,14 @@ services.AddCyberArkCcp(options =>
 // In your multi-tenant service
 public class TenantService
 {
-    private readonly ICcpClient _ccpClient;
+    private readonly ICCPClient _CCPClient;
 
-    public TenantService(ICcpClient ccpClient) => _ccpClient = ccpClient;
+    public TenantService(ICCPClient CCPClient) => _CCPClient = CCPClient;
 
     public async Task<string> GetTenantDbPasswordAsync(string tenantId)
     {
         // Each tenant uses its own Application ID automatically
-        return await _ccpClient.GetPasswordAsync(
+        return await _CCPClient.GetPasswordAsync(
             SecretRequest.ForObjectWithAppId($"{tenantId}_Database", tenantId));
     }
 }
@@ -143,7 +143,7 @@ var tenants = new[] { "TenantA", "TenantB", "TenantC" };
 
 foreach (var tenant in tenants)
 {
-    var dbPassword = await ccpClient.GetPasswordAsync(
+    var dbPassword = await CCPClient.GetPasswordAsync(
         SecretRequest.ForObjectWithAppId($"{tenant}_DB", $"{tenant}_App"));
     
     // Connect to tenant-specific database
@@ -155,16 +155,16 @@ foreach (var tenant in tenants)
 
 ```csharp
 // Public data - no certificate required
-var publicData = await ccpClient.GetSecretAsync(
+var publicData = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("PublicConfig", "PublicApp"));
 
 // Sensitive data - requires certificate
-var sensitiveData = await ccpClient.GetSecretAsync(
+var sensitiveData = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("SensitiveAccount", "SensitiveApp"));
     // Certificate automatically selected from CertificatesByApplicationId
 
 // Override certificate for specific request
-var auditData = await ccpClient.GetSecretAsync(
+var auditData = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("AuditAccount", "SensitiveApp")
         .UsingCertificateFile(@"C:\certs\audit-specific.p12", "auditpass"));
 ```
@@ -174,7 +174,7 @@ var auditData = await ccpClient.GetSecretAsync(
 ```json
 {
   "CyberArk": {
-    "BaseUrl": "https://ccp.company.com",
+    "BaseUrl": "https://CCP.company.com",
     "DefaultApplicationId": "WebApp",
     "DefaultCertificate": {
       "FilePath": "C:\\certs\\default.p12",
@@ -204,7 +204,7 @@ var auditData = await ccpClient.GetSecretAsync(
 - `StoreName`: `"My"`, `"Root"`, `"CA"`, `"Trust"`, `"Disallowed"`, `"TrustedPeople"`, `"TrustedPublisher"`, `"AuthRoot"`, `"AddressBook"`
 
 ```csharp
-services.AddCyberArkCcp(configuration.GetSection("CyberArk"));
+services.AddCyberArkCCP(configuration.GetSection("CyberArk"));
 ```
 
 ## Async vs Synchronous Usage
@@ -214,28 +214,28 @@ The library supports both asynchronous and synchronous calling patterns:
 ### Asynchronous Methods (Recommended)
 ```csharp
 // Async methods - recommended for modern applications
-var secret = await ccpClient.GetSecretAsync("DatabaseAccount");
-var password = await ccpClient.GetPasswordAsync("APIKey");
-bool isConnected = await ccpClient.TestConnectionAsync();
+var secret = await CCPClient.GetSecretAsync("DatabaseAccount");
+var password = await CCPClient.GetPasswordAsync("APIKey");
+bool isConnected = await CCPClient.TestConnectionAsync();
 
 // Works great with ConfigureAwait for library code
-var secret = await ccpClient.GetSecretAsync(request).ConfigureAwait(false);
+var secret = await CCPClient.GetSecretAsync(request).ConfigureAwait(false);
 ```
 
 ### Synchronous Methods (Legacy Support)
 ```csharp
 // Sync methods - useful for legacy code or console applications
-var secret = ccpClient.GetSecret("DatabaseAccount");
-var password = ccpClient.GetPassword("APIKey");
-bool isConnected = ccpClient.TestConnection();
+var secret = CCPClient.GetSecret("DatabaseAccount");
+var password = CCPClient.GetPassword("APIKey");
+bool isConnected = CCPClient.TestConnection();
 
 // Perfect for .NET Framework applications or where async isn't suitable
 try
 {
-    var dbPassword = ccpClient.GetPassword("DatabaseAccount");
+    var dbPassword = CCPClient.GetPassword("DatabaseAccount");
     ConnectToDatabase(dbPassword); // Legacy sync method
 }
-catch (CcpException ex)
+catch (CCPException ex)
 {
     // Handle errors
 }
@@ -263,12 +263,12 @@ The library uses this priority order for Application ID and certificates:
 
 ### Application ID Priority:
 1. **Request-specific** - `SecretRequest.ApplicationId`
-2. **Default** - `CcpOptions.DefaultApplicationId`
+2. **Default** - `CCPOptions.DefaultApplicationId`
 
 ### Certificate Priority:
 1. **Request-specific** - `SecretRequest.Certificate`
-2. **Application ID mapped** - `CcpOptions.CertificatesByApplicationId[applicationId]`
-3. **Default** - `CcpOptions.DefaultCertificate`
+2. **Application ID mapped** - `CCPOptions.CertificatesByApplicationId[applicationId]`
+3. **Default** - `CCPOptions.DefaultCertificate`
 4. **None** - No certificate (Application ID only authentication)
 
 ## Fluent API
@@ -276,7 +276,7 @@ The library uses this priority order for Application ID and certificates:
 The `SecretRequest` class provides a fluent API for building requests:
 
 ```csharp
-var secret = await ccpClient.GetSecretAsync(
+var secret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObject("MyAccount")
         .UsingApplicationId("MyApp")
         .UsingCertificateFile(@"C:\certs\cert.p12", "password")
@@ -284,7 +284,7 @@ var secret = await ccpClient.GetSecretAsync(
         .InFolder("Databases"));
 
 // Or use certificate from store
-var secret2 = await ccpClient.GetSecretAsync(
+var secret2 = await CCPClient.GetSecretAsync(
     SecretRequest.ForObject("MyAccount")
         .UsingApplicationId("MyApp")
         .UsingCertificateStore("THUMBPRINT123", StoreLocation.LocalMachine, StoreName.My)
@@ -299,7 +299,7 @@ var request = SecretRequest.ForObject("ServiceAccount")
 request.UserName = "serviceuser";
 request.Address = "service.company.com";
 
-var secret = await ccpClient.GetSecretAsync(request);
+var secret = await CCPClient.GetSecretAsync(request);
 ```
 
 ## Certificate Configuration
@@ -347,10 +347,10 @@ var certConfig = CertificateConfig.FromStore("THUMBPRINT"); // CurrentUser\My
 ```csharp
 try
 {
-    var password = await ccpClient.GetPasswordAsync(
+    var password = await CCPClient.GetPasswordAsync(
         SecretRequest.ForObjectWithAppId("DatabaseAccount", "DatabaseApp"));
 }
-catch (CcpException ex)
+catch (CCPException ex)
 {
     Console.WriteLine($"CCP Error: {ex.Message}");
     Console.WriteLine($"Application ID: {ex.ApplicationId}");
@@ -403,16 +403,16 @@ If you have existing code with a fixed Application ID, migration is easy:
 
 ```csharp
 // Old way (still works)
-var options = new CcpOptions 
+var options = new CCPOptions 
 { 
-    BaseUrl = "https://ccp.company.com",
+    BaseUrl = "https://CCP.company.com",
     DefaultApplicationId = "MyApp" 
 };
 
-var secret = await ccpClient.GetSecretAsync("DatabaseAccount");
+var secret = await CCPClient.GetSecretAsync("DatabaseAccount");
 
 // New flexible way
-var secret = await ccpClient.GetSecretAsync(
+var secret = await CCPClient.GetSecretAsync(
     SecretRequest.ForObjectWithAppId("DatabaseAccount", "DatabaseApp"));
 ```
 
@@ -440,7 +440,7 @@ Please ensure all contributions comply with the Apache License 2.0 and do not in
 ## Support
 
 For issues and questions:
-- GitHub Issues: [Report bugs and request features](https://github.com/matthewbohan/mbsd-cyberark-ccpclient/issues)
+- GitHub Issues: [Report bugs and request features](https://github.com/matthewbohan/mbsd-cyberark-CCPclient/issues)
 - CyberArk Documentation: [Official CCP documentation](https://docs.cyberark.com/)
 
 **Note**: This is an independent library. For official CyberArk support, please contact CyberArk directly.
