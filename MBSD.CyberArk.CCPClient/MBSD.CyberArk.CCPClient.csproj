@@ -16,7 +16,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>MBSD.CyberArk.CCPClient</PackageId>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<Authors>Matthew Bohan</Authors>
 		<Company>MBSD</Company>
 		<Product>MBSD CyberArk Central Credential Provider .NET Client</Product>
