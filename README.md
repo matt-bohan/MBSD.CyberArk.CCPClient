@@ -81,8 +81,8 @@ dotnet add package MBSD.CyberArk.CCPClient
                     }
     
     
-                    // Example of getting a secret using an object ID/Account Name, Safe Name, and an optional certificate file.
-                    // and Application ID which is the recommended way to efficiency retrieve secrets from CyberArk CCP. 
+                    // Example of getting a secret using an object ID/Account Name, Safe Name, Application ID and an optional certificate file.
+                    // which is the recommended way to efficiency retrieve secrets from CyberArk CCP. 
     
                     var secret = CCPClient.GetSecret(
                         SecretRequest.ForObject("ObjectID/AccountName")
@@ -92,7 +92,7 @@ dotnet add package MBSD.CyberArk.CCPClient
                     );
     
                  
-                    // Example of getting a secret using an object ID/Account Name, Safe Name, and a certificate stored in the Local Machine store. 
+                    // Example of getting a secret using an object ID/Account Name, Safe Name, Application ID and a certificate stored in the Local Machine store. 
                     var secret2 = CCPClient.GetSecret(
                         SecretRequest.ForObject("ObjectID/AccountName")
                             .InSafe("MySafeName")
@@ -100,7 +100,7 @@ dotnet add package MBSD.CyberArk.CCPClient
                             .UsingCertificateStore("CERT_THUMBPRINT", StoreLocation.LocalMachine, StoreName.My)
                     );
     
-                    // Example of getting just the credential/password using an object ID/Account Name, Safe Name, and specifying a folder within the safe. 
+                    // Example of getting just the credential/password using an object ID/Account Name, Safe Name, Application ID, and specifying a folder within the safe. 
                     var password3 = CCPClient.GetPasswordOnly(
                        SecretRequest.ForObject("ObjectID/AccountName")
                            .InSafe("MySafeName")
@@ -125,10 +125,18 @@ dotnet add package MBSD.CyberArk.CCPClient
     }
 
 
+### Asyncronous Usage
+
+// Retrieve a secret using an object ID/Account Name, Safe Name, and an application ID using Async. 
+var secret = await CCPClient.GetSecretAsync(
+    SecretRequest.ForObject("ObjectID/AccountName")
+        .InSafe("MySafeName")
+        .UsingApplicationId("MyApplicationID")
+        
+);
 
 
-
-
+ 
 
 ## License
 
@@ -156,5 +164,6 @@ Please ensure all contributions comply with the Apache License 2.0 and do not in
 For issues and questions:
 - GitHub Issues: [Report bugs and request features](https://github.com/matthewbohan/mbsd-cyberark-CCPclient/issues)
 - CyberArk Documentation: [Official CCP documentation](https://docs.cyberark.com/)
+- Note: CyberArk will be unable to provide support for this unofficial library - please contact me directly instead. 
 
-**Note**: This is an independent library. For official CyberArk support, please contact CyberArk directly.
+   
